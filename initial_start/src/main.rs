@@ -1,7 +1,28 @@
 use rand::Rng;
 use std::io;
 
-// let stages: [String: 1] = []
+//NOTES
+/*
+21:49 < Mutabah> Quick check:
+21:49 < Mutabah> - I suggest using a `struct` to contain the game state variables
+21:49 < Mutabah> - abstract out the yes/no query
+21:50 < AJTJ> game state variables like health etc?
+21:50 < Mutabah> - use `+=` instead of `stage = stage + 1;`
+21:50 < Mutabah> (yes)
+21:50 < AJTJ> should I be using more mutable vars?
+21:52 < Mutabah> - You could remove duplication in `enter_combat` by keepting track of whose turn it is (initialise that where you currently set `hero_initiative`)
+21:53 < GreenJello> AJTJ, with a game state struct, you might take a mutable reference to that instead
+21:54 < Arnavion> Eh, for a game that's one function, using local vars for the state instead of a struct isn't a big deal
+21:54 < AJTJ> Arnavion: that's a good point, but it's good to think of scaling
+21:54 < AJTJ> cause it will
+21:57 < GreenJello> you could abstract a lot of this logic with structs, though, e.g. https://gist.github.com/brigand/2573131a7045d2617d80a4fab2b088db
+21:57 < Arnavion> I'd more prioritize fixing the fact that the two branches inside the loop in enter_combat() are mirror images of each other
+21:58 < AJTJ> Arnavion: yea, I wasn't sure how to resolve that. I'm super new to rust.
+21:58 < Arnavion> if hero_initialive { hero_attack(); } loop { creature_attack(); hero_attack(); }
+22:00 < Mutabah> or `let mut hero_turn = hero_initiative; loop { if hero_turn { ... } else { ... }; half_rounds += 1; hero_turn = !hero_turn; }`
+22:01 < Arnavion> Yeah, that would avoid the duplication of hero_attack() too
+22:01 < Mutabah> and allow common code after each half-round (e.g. if attacking a certain monster can lead to self-damage)
+*/
 
 fn main() {
     let mut health: i32 = 30;
