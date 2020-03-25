@@ -162,7 +162,7 @@ fn hero_attack(health: i32) -> i32 {
 }
 
 fn creature_attack(health: i32) -> i32 {
-    let damage = rand::thread_rng().gen_range(1, 4);
+    let damage = rand::thread_rng().gen_range(2, 5);
     println!("It attacks you and does {} damage", damage);
     let new_health: i32 = health - damage;
     new_health
